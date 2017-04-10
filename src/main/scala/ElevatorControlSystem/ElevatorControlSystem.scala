@@ -20,7 +20,7 @@ case class ElevatorState(elevatorId: Int, floorNumber: Int, floors: Int, goalFlo
         case d if d > 0 =>
           println("Elevator going up")
           floorNumber + 1
-        case d if d == 0 =>
+        case _ =>
           println("Elevator already at destination, no move needed.")
           floorNumber
       }

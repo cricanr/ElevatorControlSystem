@@ -45,7 +45,7 @@ object App {
         case "quit" =>
           println(" ----------------------------------------------------------------------------------------------------")
           println("Thanks for playing. Hope to see you soon, bye!")
-          System.exit(1)
+          System.exit(0)
         case "status" =>
           ElevatorControlSystem.printElevatorStates(elevatorControlSystem.status())
           println("Please choose your next option!")

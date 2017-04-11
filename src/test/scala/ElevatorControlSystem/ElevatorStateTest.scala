@@ -112,15 +112,5 @@ class ElevatorStateTest extends WordSpec with Matchers {
         elevatorState.nextFloor(2) should be(2)
       }
     }
-
-    "Calling the nextFloor method with a goalFloor > floors and currentFloor = 2" should {
-      "return a validation error" in {
-        val elevatorState = {
-          ElevatorState(elevatorId = 1, floorNumber = 2, floors = 4, goalFloorNumbers = Set(10))
-        }
-
-        elevatorState.nextFloor(2) should be(2)
-      }
-    }
   }
 }

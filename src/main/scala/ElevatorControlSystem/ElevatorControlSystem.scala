@@ -15,7 +15,10 @@ trait ElevatorControlSystem {
 }
 
 class ElevatorControlSystemImpl(numberOfElevators: Int, numberOfFloors: Int) extends ElevatorControlSystem {
-  private var elevators = for (i <- 0 until numberOfElevators) yield ElevatorState(i, 0, numberOfFloors, Set.empty)
+
+  require(numberOfElevators >= 0 && numberOfElevators <= 16, s"numberOfElevators: $numberOfElevators argument must be between 0 - 16")
+
+  private var elevators = for (i <- 1 until numberOfElevators + 1) yield ElevatorState(i, 0, numberOfFloors, Set.empty)
   private var pickupRequests = Queue[PickupRequest]()
 
   private def update(elevator: ElevatorState, goalFloor: Int): Unit = {

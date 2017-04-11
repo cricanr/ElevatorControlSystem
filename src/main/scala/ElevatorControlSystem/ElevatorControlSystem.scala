@@ -62,7 +62,7 @@ class ElevatorControlSystemImpl(numberOfElevators: Int, numberOfFloors: Int) ext
 }
 
 object ElevatorControlSystem {
-  def printElevatorsStatus(elevatorStates: Seq[ElevatorState]): Unit = {
+  def printElevatorStates(elevatorStates: Seq[ElevatorState]): Unit = {
     println("Here is a summary of the elevator states:")
     elevatorStates.foreach { elevatorState =>
       println(s"Elevator with id: ${elevatorState.elevatorId} is at floor number: ${elevatorState.floorNumber} ")

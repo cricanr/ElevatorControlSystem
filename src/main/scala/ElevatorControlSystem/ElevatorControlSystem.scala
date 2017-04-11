@@ -1,7 +1,5 @@
 package ElevatorControlSystem
 
-import scala.collection.immutable.Queue
-
 case class PickupRequest(pickupFloor: Int, direction: Int)
 
 trait ElevatorControlSystem {
@@ -19,7 +17,7 @@ class ElevatorControlSystemImpl(numberOfElevators: Int, numberOfFloors: Int) ext
   require(numberOfElevators >= 0 && numberOfElevators <= 16, s"numberOfElevators: $numberOfElevators argument must be between 0 - 16")
 
   private var elevators = for (i <- 1 until numberOfElevators + 1) yield ElevatorState(i, 0, numberOfFloors, Set.empty)
-  private var pickupRequests = Queue[PickupRequest]()
+  private val queuePickupRequest = new QueuePickupRequest()
 
   private def update(elevator: ElevatorState, goalFloor: Int): Unit = {
     val updatedElevatorState = elevator.update(elevator.nextFloor(goalFloor), goalFloor)
@@ -39,16 +37,14 @@ class ElevatorControlSystemImpl(numberOfElevators: Int, numberOfFloors: Int) ext
   }
 
   override def pickup(pickupRequest: PickupRequest): Unit = {
-    if (!pickupRequests.contains(pickupRequest))
-      pickupRequests = pickupRequests.enqueue(pickupRequest)
+    queuePickupRequest.enqueue(pickupRequest)
   }
 
   override def step(): Unit = {
     elevators.foreach { elevator =>
-      val maybePickupRequest = pickupRequests.dequeueOption
+      val maybePickupRequest = queuePickupRequest.dequeue()
       maybePickupRequest match {
-        case Some((pickupRequest, updatedQueue)) =>
-          pickupRequests = updatedQueue
+        case Some(pickupRequest) =>
           println(s"Sending a pickup request: {floor: ${pickupRequest.pickupFloor} ; direction: ${pickupRequest.direction} " +
             s"to the elevator with id ${elevator.elevatorId}")
 

@@ -2,12 +2,10 @@ package ElevatorControlSystem
 
 import scala.collection.immutable.Queue
 
-class QueuePickupRequest {
-  private var queue = Queue[PickupRequest]()
+class PickupRequestQueue(var queue: Queue[PickupRequest]) {
 
-  def enqueue(pickupRequest: PickupRequest) = {
-    if (!queue.contains(pickupRequest))
-      queue = queue.enqueue(pickupRequest)
+  def enqueue(pickupRequest: PickupRequest): Unit = {
+    queue = queue.enqueue(pickupRequest)
   }
 
   def dequeue(): Option[PickupRequest] = {

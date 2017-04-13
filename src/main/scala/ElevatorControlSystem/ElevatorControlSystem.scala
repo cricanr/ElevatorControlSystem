@@ -7,21 +7,24 @@ trait ElevatorControlSystem {
 
   def update(elevatorStatus: ElevatorState): Unit
 
+  def update(elevator: ElevatorState, goalFloor: Int): Unit
+
   def pickup(pickupRequest: PickupRequest): Unit
 
   def step(): Unit
 }
 
-class ElevatorControlSystemImpl(numberOfElevators: Int, numberOfFloors: Int) extends ElevatorControlSystem {
+class ElevatorControlSystemImpl(numberOfElevators: Int, numberOfFloors: Int)(implicit pickupRequestQueue: PickupRequestQueue) extends ElevatorControlSystem {
 
   require(numberOfElevators >= 0 && numberOfElevators <= 16, s"numberOfElevators: $numberOfElevators argument must be between 0 - 16")
 
   private var elevators = for (i <- 1 until numberOfElevators + 1) yield ElevatorState(i, 0, numberOfFloors, Set.empty)
-  private val queuePickupRequest = new QueuePickupRequest()
 
-  private def update(elevator: ElevatorState, goalFloor: Int): Unit = {
+  override def update(elevator: ElevatorState, goalFloor: Int): Unit = {
     val updatedElevatorState = elevator.update(elevator.nextFloor(goalFloor), goalFloor)
-    elevators = elevators.updated(elevators.indexOf(elevator), updatedElevatorState)
+    val maybeUpdatedElevator = elevators.find(_.elevatorId == elevator.elevatorId)
+    maybeUpdatedElevator.foreach(updatedElevator =>
+      elevators = elevators.updated(elevators.indexOf(updatedElevator), updatedElevatorState))
   }
 
   override def status(): Seq[ElevatorState] = {
@@ -37,12 +40,12 @@ class ElevatorControlSystemImpl(numberOfElevators: Int, numberOfFloors: Int) ext
   }
 
   override def pickup(pickupRequest: PickupRequest): Unit = {
-    queuePickupRequest.enqueue(pickupRequest)
+    pickupRequestQueue.enqueue(pickupRequest)
   }
 
   override def step(): Unit = {
     elevators.foreach { elevator =>
-      val maybePickupRequest = queuePickupRequest.dequeue()
+      val maybePickupRequest = pickupRequestQueue.dequeue()
       maybePickupRequest match {
         case Some(pickupRequest) =>
           println(s"Sending a pickup request: {floor: ${pickupRequest.pickupFloor} ; direction: ${pickupRequest.direction} " +

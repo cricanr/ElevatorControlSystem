@@ -2,6 +2,8 @@ package example
 
 import ElevatorControlSystem.{ElevatorControlSystemImpl, PickupRequest}
 import ElevatorControlSystem._
+
+import scala.collection.immutable.Queue
 import scala.util.{Failure, Try}
 
 object App {
@@ -17,6 +19,12 @@ object App {
     }
   }
 
+  private def buildElevatorControlSystem(numberOfElevators: Int, numberOfFloors: Int) = {
+    val queue = Queue[PickupRequest]()
+    implicit val pickupRequestQueue = new PickupRequestQueue(queue)
+    new ElevatorControlSystemImpl(numberOfElevators, numberOfFloors)
+  }
+
   private def simulate = {
     println("Welcome to the Elevator control system simulation app!")
     val sc = new java.util.Scanner(System.in)
@@ -27,7 +35,7 @@ object App {
     println("Please provide the desired number of floors the building has: ")
     val numberOfFloors = sc.nextInt()
 
-    val elevatorControlSystem = new ElevatorControlSystemImpl(numberOfElevators, numberOfFloors)
+    val elevatorControlSystem = buildElevatorControlSystem(numberOfElevators, numberOfFloors)
 
     println("Please choose your option. Here are the commands possible: ")
     println(" ------ to quit simulation type in 'quit'                                                      ------")

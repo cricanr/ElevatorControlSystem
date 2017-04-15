@@ -67,7 +67,7 @@ object App {
             s"Please give your pickup floor number (must be in the range: 0 - $numberOfFloors)")
 
           println("Please give your direction (<0 -> down ; >0 -> up): ")
-          val direction = sc.nextInt()
+          val direction = Direction(sc.nextInt())
           val pickupRequest = PickupRequest(pickupFloor, direction)
           elevatorControlSystem.pickup(pickupRequest)
           println("Please choose your next option!")

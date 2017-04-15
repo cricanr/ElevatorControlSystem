@@ -1,6 +1,6 @@
 package ElevatorControlSystem
 
-case class PickupRequest(pickupFloor: Int, direction: Int)
+case class PickupRequest(pickupFloor: Int, direction: Direction)
 
 trait ElevatorControlSystem {
   def status(): Seq[ElevatorState]

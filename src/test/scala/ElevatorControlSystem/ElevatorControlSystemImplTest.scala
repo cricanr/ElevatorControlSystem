@@ -66,7 +66,7 @@ class ElevatorControlSystemImplTest extends WordSpec with Matchers with MockitoS
 
       "verify that the pickupRequest is enqueued in the queue" in {
         val elevatorControlSystem = new ElevatorControlSystemImpl(2, 6)
-        val pickupRequest = PickupRequest(pickupFloor = 3, 1)
+        val pickupRequest = PickupRequest(pickupFloor = 3, Up)
         elevatorControlSystem.pickup(pickupRequest)
 
         verify(pickupRequestQueueMock).enqueue(pickupRequest)
@@ -87,7 +87,7 @@ class ElevatorControlSystemImplTest extends WordSpec with Matchers with MockitoS
     "Calling the step method given the queue is not empty" should {
       "update the elevator state with the dequeued command" in {
         implicit val pickupRequestQueueMock = mock[PickupRequestQueue]
-        when(pickupRequestQueueMock.dequeue()).thenReturn(Some(PickupRequest(4, 2)))
+        when(pickupRequestQueueMock.dequeue()).thenReturn(Some(PickupRequest(4, Up)))
         val elevatorControlSystem = new ElevatorControlSystemImpl(2, 6)
 
         elevatorControlSystem.step()

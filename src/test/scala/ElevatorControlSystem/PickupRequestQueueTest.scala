@@ -11,7 +11,7 @@ class PickupRequestQueueTest extends WordSpec with MockitoSugar with Eventually 
     "calling the enqueue method" should {
       "will enqueue the pickupRequest in the queue" in {
         val queueMock = mock[Queue[PickupRequest]]
-        val pickupRequest = PickupRequest(3, 5)
+        val pickupRequest = PickupRequest(3, Up)
         when(queueMock.enqueue(pickupRequest)).thenReturn(queueMock)
         val pickupRequestQueue = new PickupRequestQueue(queueMock)
 
@@ -25,7 +25,7 @@ class PickupRequestQueueTest extends WordSpec with MockitoSugar with Eventually 
       "call the queue dequeue method and return the updated queue and the optional pickupRequest" in {
         val queueMock = mock[Queue[PickupRequest]]
         val queueAfterEnqueueMock = mock[Queue[PickupRequest]]
-        val pickupRequest = PickupRequest(3, 5)
+        val pickupRequest = PickupRequest(3, Up)
 
         when(queueMock.enqueue(pickupRequest)).thenReturn(queueAfterEnqueueMock)
         when(queueMock.dequeueOption).thenReturn(Some((pickupRequest, queueMock)))

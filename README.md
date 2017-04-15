@@ -29,4 +29,11 @@ The system is created using these classes:
 * Direction - type safe class for direction
 
 The list of pickup requests that the elevator control system must schedule is stored in a queue.
-I decided to use a standard Scala immutable implementation of the queue. 
+I decided to use a standard Scala immutable implementation of the queue.
+ 
+#Further improvements, priorities, missing parts
+I decided with going with a very simple algorithm for scheduling because I wanted to make sure I have 
+enough time to implement a clean / tested code rather then investing a lot of time in
+implementing a smarter / optimal algorithm and having non-tested / non-stable code.
+
+Most important improvement that needs to be coded is to add a smart scheduling algorithm.

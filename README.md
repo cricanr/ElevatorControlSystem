@@ -1,7 +1,7 @@
 ElevatorControlSystem
 =================================
 An elevator control system app. Application is built as a simple Scala console app.
-No framework used.
+No framework used.  
 
 #Compile, test & run instructions
 In order to compile the app you should run from the app root folder: 
